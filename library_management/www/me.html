@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Library Management System</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-white text-gray-800 font-sans">
+	<!-- Header -->
+	<!-- <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg">
+		<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+			<h1 class="text-2xl font-bold">📚 Library Hub</h1>
+			<nav class="space-x-6 flex items-center">
+				<a href="/" class="hover:underline">Home</a>
+				<a href="/loanList" class="hover:underline">Loan List</a>
+				<a href="/reservationList" class="hover:underline">Reservations</a>
+				<a href="/loan" class="hover:underline">Issue Book</a>
+				<a href="/reservation" class="hover:underline">Reserve Book</a>
+				{% if frappe.session.user == "Guest" %}
+				<a href="/login" class="bg-white text-blue-700 px-4 py-1 rounded hover:bg-blue-100 ml-4">Login</a>
+				{% else %}
+				<span class="ml-4 text-sm text-white">Welcome, {{ frappe.session.user }}</span>
+				<a href="/api/method/logout"
+					class="ml-4 bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded shadow transition duration-200">
+					Logout
+				</a>
+				{% endif %}
+			</nav>
+		</div>
+	</header> -->
+
+	{% include "templates/includes/nav.html" %}
+
+
+
+	<!-- Hero Section -->
+	<section class="bg-gray-50 py-20">
+		<div class="max-w-5xl mx-auto px-6 text-center">
+			<h2 class="text-4xl font-bold mb-4 text-gray-800">Welcome to Your Digital Library</h2>
+			<p class="text-lg text-gray-600 mb-8">
+				Search, borrow, and reserve books — all in one place. A smarter way to manage your reading life.
+			</p>
+			<a href="/loan"
+				class="inline-block bg-indigo-600 text-white text-lg px-6 py-3 rounded-full hover:bg-indigo-700 transition duration-200">
+				Start Issuing Books
+			</a>
+
+		</div>
+	</section>
+
+	<!-- Features Section -->
+	<section class="py-16 bg-white">
+		<div class="max-w-6xl mx-auto px-6">
+			<div class="text-center mb-12">
+				<h3 class="text-3xl font-semibold text-gray-800">Why Use Library Hub?</h3>
+				<p class="text-gray-500 mt-2">Empowering members and librarians with efficient tools.</p>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+				<!-- <div class="bg-gray-100 p-6 rounded-xl shadow-sm text-center">
+					<div class="text-4xl mb-4">🔍</div>
+					<h4 class="text-xl font-semibold mb-2">Smart Search</h4>
+					<p class="text-gray-600">Find books instantly with advanced search filters and categories.</p>
+				</div> -->
+				<div class="bg-gray-100 p-6 rounded-xl shadow-sm text-center">
+					<div class="text-4xl mb-4">📦</div>
+					<h4 class="text-xl font-semibold mb-2">Easy Borrowing</h4>
+					<p class="text-gray-600">Issue and track book loans seamlessly with automated reminders.</p>
+				</div>
+				<div class="bg-gray-100 p-6 rounded-xl shadow-sm text-center">
+					<div class="text-4xl mb-4">📅</div>
+					<h4 class="text-xl font-semibold mb-2">Reservation System</h4>
+					<p class="text-gray-600">Reserve out-of-stock books and get notified when they're available.</p>
+				</div>
+
+				<div class="bg-gray-100 p-6 rounded-xl shadow-sm text-center">
+					<div class="text-4xl mb-4">📝</div>
+					<h4 class="text-xl font-semibold mb-2">User Activity</h4>
+					<p class="text-gray-600">
+						Monitor recent reservation, book loans, and member activity within the system.
+					</p>
+				</div>
+
+
+
+			</div>
+		</div>
+	</section>
+
+	<!-- Call to Action -->
+	<section class="bg-indigo-700 text-white py-16">
+		<div class="max-w-4xl mx-auto px-6 text-center">
+			<h3 class="text-3xl font-bold mb-4">Ready to Explore?</h3>
+			<p class="text-lg mb-6">Join the community of readers and enjoy effortless library access.</p>
+			<a href="/reservation"
+				class="inline-block bg-white text-indigo-700 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition">
+				Reserve a Book Now
+			</a>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="bg-gray-100 py-6 text-center text-sm text-gray-500">
+		© 2025 Library Hub. Built with ❤️ using Frappe.
+	</footer>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-sans text-gray-800">
+
+    {% include "templates/includes/nav.html" %}
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h1 class="text-3xl font-extrabold text-gray-800 mb-8 text-center flex gap-2">
+            📚 <span>All Books</span>
+        </h1>
+
+        <!-- ADD BUTTON TO ADD BOOK -->
+        {% if user_roles|length > 5 or user_roles[0] == 'Librarian' %}
+        <div class="text-center">
+            <a href="/book"
+                class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+                ➕ Add New Book
+            </a>
+        </div>
+        {% endif %}
+
+        <div id="message" class="hidden mb-6 p-4 rounded text-sm"></div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            {% for book in books %}
+            <div
+                class="bg-white rounded-2xl shadow-md hover:shadow-lg transition duration-300 border border-gray-200 p-6 relative">
+                <div class="flex flex-col h-full">
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold mb-2 text-indigo-700">{{ book.title }}</h2>
+                        <p class="text-sm text-gray-600 mb-1"><span class="font-medium">Author:</span> {{ book.author }}
+                        </p>
+                        <p class="text-sm text-gray-600 mb-1"><span class="font-medium">ISBN:</span> {{ book.isbn }}</p>
+                        <p class="text-sm text-gray-600 mb-1"><span class="font-medium">Publish Date:</span> {{
+                            book.publish_date }}</p>
+                        <p class="text-sm text-gray-600 mb-1"><span class="font-medium">Total Copies:</span> {{
+                            book.total_copy }}</p>
+                        <p class="text-sm text-gray-600"><span class="font-medium">Available:</span> {{
+                            book.available_copy }}</p>
+                    </div>
+
+                    <!-- Buttons Section (Edit/Delete) -->
+                    {% if user_roles|length > 5 or user_roles[0] == 'Librarian' %}
+                    <div class="mt-5 flex justify-between gap-2">
+                        <a href="/app/book/{{ book.name }}"
+                            class="bg-yellow-500 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200">
+                            ✏️ Edit
+                        </a>
+
+                        <button onclick="deleteBook('{{ book.name }}')"
+                            class="bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200">
+                            🗑 Delete
+                        </button>
+                    </div> {% endif %}
+
+
+                    {% if user_roles[0] == 'Member' and user_roles|length < 5%} <div
+                        class="mt-5 flex justify-between gap-2">
+                        <a href="/reservation"
+                            class="bg-yellow-500 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200">
+                            Reserved Now
+                        </a>
+
+
+                </div> {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+
+    <script>
+        const csrf_token = "{{ csrf_token }}";
+
+        async function deleteBook(bookName) {
+            if (!confirm("Are you sure you want to delete this book?")) return;
+
+            try {
+                const res = await fetch(`/api/resource/Book/${bookName}`, {
+                    method: "DELETE",
+                    headers: {
+                        "X-Frappe-CSRF-Token": csrf_token,
+                    },
+                });
+
+                if (res.ok) {
+                    alert("Book deleted successfully!");
+                    location.reload();
+                } else {
+                    const error = await res.json();
+                    alert(error.message || "Failed to delete book.");
+                }
+            } catch (err) {
+                alert("Error: " + (err.message || "Something went wrong."));
+            }
+        }
+    </script>
+
+</body>
+
+</html>
