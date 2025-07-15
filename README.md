@@ -78,7 +78,7 @@ bench new-site lms.com
 
 # 4. Get the app (replace URL with your repo)
 cd apps
-git clone https://github.com/your-username/library_management.git
+git clone https://github.com/md4648/Library-Managemet-System.git
 cd ..
 
 # 5. Install the app
