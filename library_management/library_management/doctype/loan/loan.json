@@ -6,11 +6,12 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "select_from_reservation",
+  "reservation_id",
   "book",
   "member",
   "loan_date",
   "return_date",
-  "is_returned",
   "column_break_vdnu",
   "retured_at",
   "status",
@@ -40,15 +41,10 @@
    "label": "Return Date"
   },
   {
-   "default": "0",
-   "fieldname": "is_returned",
-   "fieldtype": "Check",
-   "label": "Is Returned"
-  },
-  {
    "allow_on_submit": 1,
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Status",
    "options": "On Loan\nReturned\nOverdue",
    "read_only": 1
@@ -73,13 +69,27 @@
   {
    "fieldname": "column_break_vdnu",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "select_from_reservation",
+   "fieldtype": "Check",
+   "label": "Select from Reservation"
+  },
+  {
+   "depends_on": "eval:(doc.select_from_reservation)",
+   "fieldname": "reservation_id",
+   "fieldtype": "Link",
+   "label": "Reservation ID",
+   "mandatory_depends_on": "eval:(doc.select_from_reservation)",
+   "options": "Reservation"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-07-11 22:53:21.924813",
+ "modified": "2025-07-13 22:54:55.423082",
  "modified_by": "Administrator",
  "module": "Library Management",
  "name": "Loan",
@@ -87,16 +97,13 @@
  "owner": "Administrator",
  "permissions": [
   {
-   "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "System Manager",
-   "share": 1,
-   "write": 1
+   "share": 1
   }
  ],
  "row_format": "Dynamic",

@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:{book}-{member}-{reservation_date}",
- "creation": "2025-07-11 09:45:42.876440",
+ "creation": "2025-07-14 11:18:55.949353",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -11,7 +11,8 @@
   "reservation_date",
   "fulfilled",
   "status",
-  "fulfilled_on"
+  "fulfilled_on",
+  "user"
  ],
  "fields": [
   {
@@ -42,20 +43,29 @@
   {
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Status",
-   "options": "Requested\nFulfilled",
+   "options": "Not Completed\nCompleted",
    "read_only": 1
   },
   {
    "fieldname": "fulfilled_on",
    "fieldtype": "Datetime",
    "label": "Fulfilled On"
+  },
+  {
+   "default": "user",
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-11 21:38:18.521271",
+ "modified": "2025-07-14 14:06:16.640458",
  "modified_by": "Administrator",
  "module": "Library Management",
  "name": "Reservation",
@@ -73,6 +83,15 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Member",
+   "share": 1
   }
  ],
  "row_format": "Dynamic",

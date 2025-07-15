@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+{% from "library_management/templates/includes/macros.html" import Home_Page %}
+
+{% if frappe.session.user == "Guest" and current_path != "/login" %}
+{{ Home_Page() }}
+{% else %}
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Login | Library Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .fade {
+            animation: fadein 0.6s ease;
+        }
+
+        @keyframes fadein {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+
+<body class="min-h-screen flex items-center justify-center text-white font-sans">
+
+    <div class="glass w-full max-w-md fade">
+        <h2 class="text-3xl font-bold text-center mb-6">🔐 Library Login</h2>
+
+        <div id="alert" class="text-sm text-center mb-4 hidden"></div>
+
+        <form id="loginForm" class="space-y-5">
+            <div>
+                <label class="block mb-1 text-sm">Email or Username</label>
+                <div class="relative">
+                    <input id="usr" type="text" required
+                        class="w-full px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                    <span class="absolute top-2.5 right-3 text-gray-400">@</span>
+                </div>
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm">Password</label>
+                <div class="relative">
+                    <input id="pwd" type="password" required
+                        class="w-full px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                    <span class="absolute top-2.5 right-3 text-gray-400">🔒</span>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition">
+                Login
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1.5 rounded-lg hidden">
+                Logout
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const alertBox = document.getElementById("alert");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        function showAlert(type, message) {
+            alertBox.classList.remove("hidden");
+            alertBox.className = `text-sm text-center mb-4 ${type === 'success' ? 'text-green-300' : type === 'danger' ? 'text-red-300' : 'text-yellow-300'}`;
+            alertBox.innerText = message;
+        }
+
+        async function checkLoginStatus() {
+            const res = await fetch("/api/method/frappe.auth.get_logged_user");
+            const result = await res.json();
+
+            if (result.message && result.message !== "Guest") {
+                loginForm.classList.add("hidden");
+                logoutBtn.classList.remove("hidden");
+                showAlert("success", `Logged in as ${result.message}`);
+            }
+        }
+
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const usr = document.getElementById("usr").value;
+            const pwd = document.getElementById("pwd").value;
+
+            try {
+                const response = await fetch("/api/method/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ usr, pwd }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showAlert("success", "Login successful!");
+                    loginForm.classList.add("hidden");
+                    logoutBtn.classList.remove("hidden");
+
+                    setTimeout(() => {
+                        window.location.href = "/";
+                    }, 1000);
+                } else {
+                    showAlert("danger", data.message || "Login failed.");
+                }
+            } catch (err) {
+                showAlert("danger", "Network error.");
+            }
+        });
+
+        logoutBtn.addEventListener("click", async () => {
+            await fetch("/api/method/logout");
+            showAlert("info", "Logged out. Reloading...");
+            setTimeout(() => location.reload(), 1000);
+        });
+
+        window.addEventListener("DOMContentLoaded", checkLoginStatus);
+    </script>
+
+</body>
+
+</html>
+{% endif %}
